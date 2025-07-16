@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Lumether Explorer</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #0e0e0e; color: #eee; }
+    h1 { color: #00ffcc; }
+    pre { background: #1e1e1e; padding: 10px; overflow-x: auto; }
+    button { margin: 5px 0; padding: 10px; background: #00ffcc; border: none; color: #000; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1> Lumether Blockchain Explorer</h1>
+
+  <button onclick="fetchChain()"> Afficher la Blockchain</button>
+  <button onclick="mineBlock()"> Miner un Bloc</button>
+
+  <div id="output"><pre>Clique pour démarrer...</pre></div>
+
+  <script>
+    const api = "http://localhost:8080";
+
+    function fetchChain() {
+      fetch(api + "/chain")
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById("output").innerHTML = "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
+        });
+    }
+
+    function mineBlock() {
+      fetch(api + "/mine")
+        .then(res => res.json())
+        .then(data => {
+          alert("Bloc miné ! #" + data.index + "\nHash: " + data.hash);
+          fetchChain();
+        });
+    }
+  </script>
+</body>
+</html>
